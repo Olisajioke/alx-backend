@@ -49,14 +49,14 @@ class Server:
         assert index is None or isinstance(index, int), assert1
         if index is not None:
             assert 0 <= index <= max_index, "Index out of range"
-        
+
         # Calculate start and end index for the current page
         start_index = index if index is not None else 0
         end_index = min(start_index + page_size, total_items)
-        
+
         # Calculate next index
         next_index = end_index if end_index < max_index else None
-        
+
         return {
             'index': start_index,
             'next_index': next_index,

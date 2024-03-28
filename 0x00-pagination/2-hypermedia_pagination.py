@@ -33,16 +33,16 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """Return the appropriate page of the dataset."""
-        assert1 =  "Page must be a positive integer"
-        assert2 =  "Page size must be a positive integer"
+        assert1 = "Page must be a positive integer"
+        assert2 = "Page size must be a positive integer"
         assert isinstance(page, int) and page > 0, assert1
         assert isinstance(page_size, int) and page_size > 0, assert2
-        
+
         dataset = self.dataset()
         total_pages = math.ceil(len(dataset) / page_size)
         if page > total_pages:
             return []
-        
+
         start_index, end_index = index_range(page, page_size)
         return dataset[start_index:end_index]
 

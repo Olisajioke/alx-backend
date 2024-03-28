@@ -5,6 +5,7 @@ import csv
 from typing import List, Tuple
 import math
 
+
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """Return the start and end index for a given page and page size."""
     start_index = (page - 1) * page_size
@@ -37,11 +38,11 @@ class Server:
         assert2 = "Page size must be a positive integer"
         assert isinstance(page, int) and page > 0, assert1
         assert isinstance(page_size, int) and page_size > 0, assert2
-        
+
         dataset = self.dataset()
         total_pages = math.ceil(len(dataset) / page_size)
         if page > total_pages:
             return []
-        
+
         start_index, end_index = index_range(page, page_size)
         return dataset[start_index:end_index]
