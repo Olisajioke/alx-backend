@@ -16,10 +16,12 @@ class LRUCache(BaseCaching):
         """ Add an item to the cache """
         if key is not None and item is not None:
             if len(self.cache_data) >= self.MAX_ITEMS:
-                # If cache is full, discard the least recently used item (LRU)
-                lru_key = self.access_order.pop(0)
-                del self.cache_data[lru_key]
-                print(f"DISCARD: {lru_key}")
+                if self.access_order:
+                    # If cache is full and access_order is 
+                    # not empty, discard the least recently used item (LRU)
+                    lru_key = self.access_order.pop(0)
+                    del self.cache_data[lru_key]
+                    print(f"DISCARD: {lru_key}")
             else:
                 self.access_order.append(key)
             self.cache_data[key] = item
