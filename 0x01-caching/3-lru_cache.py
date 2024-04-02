@@ -17,7 +17,7 @@ class LRUCache(BaseCaching):
         if key is not None and item is not None:
             if len(self.cache_data) >= self.MAX_ITEMS:
                 if self.access_order:
-                    # If cache is full and access_order is 
+                    # If cache is full and access_order is
                     # not empty, discard the least recently used item (LRU)
                     lru_key = self.access_order.pop(0)
                     del self.cache_data[lru_key]
