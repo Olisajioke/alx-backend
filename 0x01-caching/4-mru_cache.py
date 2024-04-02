@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ MRUCache module """
-
 from base_caching import BaseCaching
 
 
@@ -26,7 +25,7 @@ class MRUCache(BaseCaching):
             self.access_order.append(key)
 
     def get(self, key):
-        """ Retrieve an item from the cache """
+        """ Retrieves an item from the cache """
         if key is not None:
             if key in self.cache_data:
                 self.access_order.remove(key)
