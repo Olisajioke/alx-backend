@@ -2,7 +2,7 @@
 """module that creates a simple Flask app with internationalization support"""
 
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 app = Flask(__name__)
 babel = Babel(app)

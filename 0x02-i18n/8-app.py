@@ -2,7 +2,7 @@
 """Module that creates a simple Flask app with internationalization support"""
 
 from flask import Flask, render_template, request, g
-from flask_babel import Babel, _, format_datetime
+from flask_babel import Babel, format_datetime
 from datetime import datetime
 import pytz
 
