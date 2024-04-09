@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""module that creates a simple Flask app with internationalization support"""
+"""Module that creates a simple Flask app with internationalization support"""
 
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
@@ -16,20 +16,24 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
+
 def get_user(user_id):
-    """get user function that returns a user dictionary or None"""
+    """Get user function that returns a user dictionary or None"""
     return users.get(user_id)
+
 
 @app.before_request
 def before_request():
-    """before_request function that finds a user if any"""
+    """Before_request function that finds a user if any"""
     user_id = request.args.get('login_as')
     g.user = get_user(int(user_id)) if user_id else None
 
+
 @app.route('/')
 def index():
-    """"index function that renders a template"""
+    """Index function that renders a template"""
     return render_template('5-index.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
