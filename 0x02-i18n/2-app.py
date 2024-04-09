@@ -26,7 +26,7 @@ def get_locale():
 
 
 @app.route('/')
-def second_index():
+def third_index():
     """index function"""
     return render_template('2-index.html')
 
