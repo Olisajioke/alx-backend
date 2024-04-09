@@ -10,6 +10,7 @@ babel = Babel(app)
 
 
 class Config:
+    """Class to configure Babel lang"""
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = 'en'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
