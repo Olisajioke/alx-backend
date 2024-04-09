@@ -32,17 +32,17 @@ def before_request():
 @babel.localeselector
 def get_locale():
     """Function that determines the best match with the supported langs."""
-    if ('locale' in request.args and 
+    if ('locale' in request.args and
             request.args['locale'] in app.config['LANGUAGES']):
         return request.args['locale']
-    
-    if (g.user and 'locale' in g.user and 
+
+    if (g.user and 'locale' in g.user and
             g.user['locale'] in app.config['LANGUAGES']):
         return g.user['locale']
 
     if request.accept_languages:
         return request.accept_languages.best_match(app.config['LANGUAGES'])
-    
+
     return app.config['BABEL_DEFAULT_LOCALE']
 
 
@@ -50,6 +50,7 @@ def get_locale():
 def index():
     """index function that renders a template"""
     return render_template('5-index.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

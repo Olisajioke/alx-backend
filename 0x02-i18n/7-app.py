@@ -17,6 +17,7 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
+
 def get_user(user_id):
     """Get user function that returns a user dictionary or None"""
     return users.get(user_id)
@@ -65,6 +66,7 @@ def get_timezone():
             pass
 
     return 'UTC'
+
 
 @app.route('/')
 def index():

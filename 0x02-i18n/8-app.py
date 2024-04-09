@@ -18,15 +18,18 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
+
 def get_user(user_id):
     """Get user function that returns a user dictionary or None"""
     return users.get(user_id)
+
 
 @app.before_request
 def before_request():
     """Before_request function that finds a user if any"""
     user_id = request.args.get('login_as')
     g.user = get_user(int(user_id)) if user_id else None
+
 
 @babel.localeselector
 def get_locale():
@@ -43,6 +46,7 @@ def get_locale():
         return request.accept_languages.best_match(app.config['LANGUAGES'])
 
     return app.config['BABEL_DEFAULT_LOCALE']
+
 
 @babel.timezoneselector
 def get_timezone():
@@ -64,11 +68,13 @@ def get_timezone():
 
     return 'UTC'
 
+
 @app.route('/')
 def index():
     """Index function that renders a template"""
     current_time = format_datetime(datetime.now(), format='medium')
     return render_template('7-index.html', current_time=current_time)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
