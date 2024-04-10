@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """A more complex Flask app with internationalization support
 """
-from flask_babel import Babel
+from flask_babel import Babel, _
 from typing import Union, Dict
 from flask import Flask, render_template, request, g
 
@@ -62,7 +62,7 @@ def get_locale() -> str:
 def sixth_index() -> str:
     """function that renders a template.
     """
-    return render_template('6-index.html')
+    return render_template('6-index.html', _=_)
 
 
 if __name__ == '__main__':

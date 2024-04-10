@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Module to create a Flask app with internationalization support.
 """
-from flask_babel import Babel
+from flask_babel import Babel, _
 from typing import Union, Dict
 from flask import Flask, render_template, request, g
 
@@ -57,7 +57,7 @@ def get_locale() -> str:
 def fifth_index() -> str:
     """The index function.
     """
-    return render_template('5-index.html')
+    return render_template('5-index.html', _=_)
 
 
 if __name__ == '__main__':
