@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
-"""Module that creates a simple Flask app with internationalization support"""
-
-from flask import Flask, render_template, request, g
-from flask_babel import Babel
+"""A simple Flask app with internationalization support
+"""
 import pytz
+from flask_babel import Babel
+from typing import Union, Dict
+from flask import Flask, render_template, request, g
+
+
+class Config:
+    """Class to configure Babel langs.
+    """
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
+
 
 app = Flask(__name__)
-babel = Babel(app)
+app.config.from_object(Config)
 app.url_map.strict_slashes = False
-
-# Mock user table
+babel = Babel(app)
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
     2: {"name": "Beyonce", "locale": "en", "timezone": "US/Central"},
@@ -18,59 +27,55 @@ users = {
 }
 
 
-def get_user(user_id):
-    """Get user function that returns a user dictionary or None"""
-    return users.get(user_id)
+def get_user() -> Union[Dict, None]:
+    """Returns a user dictionary or None.
+    """
+    login_id = request.args.get('login_as', '')
+    if login_id:
+        return users.get(int(login_id), None)
+    return None
 
 
 @app.before_request
-def before_request():
-    """Before_request function that finds a user if any"""
-    user_id = request.args.get('login_as')
-    g.user = get_user(int(user_id)) if user_id else None
+def before_request() -> None:
+    """Finds a user if any.
+    """
+    user = get_user()
+    g.user = user
 
 
 @babel.localeselector
-def get_locale():
-    """Function that determines the best match with the supported langs."""
-    if ('locale' in request.args and
-            request.args['locale'] in app.config['LANGUAGES']):
-        return request.args['locale']
-
-    if (g.user and 'locale' in g.user and
-            g.user['locale'] in app.config['LANGUAGES']):
+def get_locale() -> str:
+    """Determines the best match with the supported langs.
+    """
+    locale = request.args.get('locale', '')
+    if locale in app.config["LANGUAGES"]:
+        return locale
+    if g.user and g.user['locale'] in app.config["LANGUAGES"]:
         return g.user['locale']
-
-    if request.accept_languages:
-        return request.accept_languages.best_match(app.config['LANGUAGES'])
-
+    header_locale = request.headers.get('locale', '')
+    if header_locale in app.config["LANGUAGES"]:
+        return header_locale
     return app.config['BABEL_DEFAULT_LOCALE']
 
 
 @babel.timezoneselector
-def get_timezone():
-    """Function that determines the best match with the supported timezones"""
-    timezone = request.args.get('timezone')
-    if timezone:
-        try:
-            pytz.timezone(timezone)
-            return timezone
-        except pytz.exceptions.UnknownTimeZoneError:
-            pass
-
-    if g.user and 'timezone' in g.user:
-        try:
-            pytz.timezone(g.user['timezone'])
-            return g.user['timezone']
-        except pytz.exceptions.UnknownTimeZoneError:
-            pass
-
-    return 'UTC'
+def get_timezone() -> str:
+    """Retrieves the timezone for a web page."""
+    tzone = request.args.get('timezone', '').strip()
+    if not tzone and g.user:
+        tzone = g.user.get('timezone', '')
+    try:
+        return pytz.timezone(tzone).zone
+    except pytz.exceptions.UnknownTimeZoneError:
+        default_timezone = app.config.get('BABEL_DEFAULT_TIMEZONE', 'UTC')
+        return default_timezone
 
 
 @app.route('/')
-def index():
-    """Index function that renders a template"""
+def seventh_index() -> str:
+    """Renders a template for the index page.
+    """
     return render_template('7-index.html')
 
 
