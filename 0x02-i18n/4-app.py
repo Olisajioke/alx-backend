@@ -21,7 +21,7 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale() -> str:
-    """Locale function that determines the best match with supported languages.
+    """Locale function that determines the best match with supported languages
     """
     queries = request.query_string.decode('utf-8').split('&')
     table = dict(map(

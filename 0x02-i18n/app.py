@@ -61,7 +61,7 @@ def get_locale() -> str:
     header_locale = request.headers.get('locale', '')
     if header_locale in app.config["LANGUAGES"]:
         return header_locale
-    return app.config['BABEL_DEFAULT_LOCALE'] 
+    return app.config['BABEL_DEFAULT_LOCALE']
 
 
 @babel.localeselector
