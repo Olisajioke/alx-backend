@@ -6,11 +6,13 @@ from flask_babel import Babel, _
 from typing import Union, Dict
 from flask import Flask, render_template, request, g
 
+
 class Config:
     """Class to configure Babel langs."""
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,6 +26,7 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
+
 def get_user() -> Union[Dict, None]:
     """Returns a user dictionary or None."""
     login_id = request.args.get('login_as', '')
@@ -31,11 +34,13 @@ def get_user() -> Union[Dict, None]:
         return users.get(int(login_id), None)
     return None
 
+
 @app.before_request
 def before_request() -> None:
     """Finds a user if any."""
     user = get_user()
     g.user = user
+
 
 @babel.localeselector
 def get_locale() -> str:
@@ -50,6 +55,7 @@ def get_locale() -> str:
         return header_locale
     return app.config['BABEL_DEFAULT_LOCALE']
 
+
 @babel.timezoneselector
 def get_timezone() -> str:
     """Retrieves the timezone for a web page."""
@@ -62,10 +68,12 @@ def get_timezone() -> str:
         default_timezone = app.config.get('BABEL_DEFAULT_TIMEZONE', 'UTC')
         return default_timezone
 
+
 @app.route('/')
 def index() -> str:
     """Renders a template for the index page."""
     return render_template('7-index.html', _=_)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
